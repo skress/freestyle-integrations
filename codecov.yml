@@ -1,9 +1,0 @@
-codecov:
-  bot: 47degdev
-comment:
-  layout: header, changes, diff
-coverage:
-  ignore:
-    - docs/*
-  status:
-    patch: false
