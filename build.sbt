@@ -1,3 +1,6 @@
+lazy val fCoreDeps =
+  Seq(%%("freestyle", Option(sys.props("frees.version")).getOrElse("0.2.0")))
+
 lazy val root = (project in file("."))
   .settings(moduleName := "root")
   .settings(name := "freestyle-integrations")
@@ -8,7 +11,7 @@ lazy val monix = (crossProject in file("freestyle-monix"))
   .settings(name := "freestyle-monix")
   .jsSettings(sharedJsSettings: _*)
   .crossDepSettings(
-    commonDeps ++ freestyleCoreDeps ++
+    commonDeps ++ fCoreDeps ++
     Seq(%("monix-eval"), %("monix-cats")): _*)
 
 lazy val monixJVM = monix.jvm
@@ -24,7 +27,7 @@ lazy val cacheRedis = (project in file("freestyle-cache-redis"))
       %%("freestyle-cache"),
       %%("akka-actor")    % "test",
       %("embedded-redis") % "test"
-    ) ++ commonDeps ++ freestyleCoreDeps
+    ) ++ commonDeps ++ fCoreDeps
   )
 
 lazy val doobie = (project in file("freestyle-doobie"))
@@ -33,7 +36,7 @@ lazy val doobie = (project in file("freestyle-doobie"))
     libraryDependencies ++= Seq(
       %%("doobie-core-cats"),
       %%("doobie-h2-cats") % "test"
-    ) ++ commonDeps ++ freestyleCoreDeps
+    ) ++ commonDeps ++ fCoreDeps
   )
 
 lazy val slick = (project in file("freestyle-slick"))
@@ -43,20 +46,20 @@ lazy val slick = (project in file("freestyle-slick"))
       %%("slick"),
       %%("freestyle-async"),
       %("h2") % "test"
-    ) ++ commonDeps ++ freestyleCoreDeps
+    ) ++ commonDeps ++ fCoreDeps
   )
 
 lazy val twitterUtil = (project in file("freestyle-twitter-util"))
   .settings(name := "freestyle-twitter-util")
   .settings(
-    libraryDependencies ++= Seq(%%("catbird-util")) ++ commonDeps ++ freestyleCoreDeps
+    libraryDependencies ++= Seq(%%("catbird-util")) ++ commonDeps ++ fCoreDeps
   )
 
 lazy val fetch = (crossProject in file("freestyle-fetch"))
   .settings(name := "freestyle-fetch")
   .jsSettings(sharedJsSettings: _*)
   .crossDepSettings(
-    commonDeps ++ freestyleCoreDeps ++ Seq(
+    commonDeps ++ fCoreDeps ++ Seq(
       %("fetch"),
       %("fetch-monix")
     ): _*
@@ -69,7 +72,7 @@ lazy val fs2 = (crossProject in file("freestyle-fs2"))
   .settings(name := "freestyle-fs2")
   .jsSettings(sharedJsSettings: _*)
   .crossDepSettings(
-    commonDeps ++ freestyleCoreDeps ++ Seq(
+    commonDeps ++ fCoreDeps ++ Seq(
       %("fs2-core")
     ): _*
   )
@@ -83,13 +86,13 @@ lazy val httpHttp4s = (project in file("http/http4s"))
     libraryDependencies ++= Seq(
       %%("http4s-core"),
       %%("http4s-dsl") % "test"
-    ) ++ commonDeps ++ freestyleCoreDeps
+    ) ++ commonDeps ++ fCoreDeps
   )
 
 lazy val httpFinch = (project in file("http/finch"))
   .settings(name := "freestyle-http-finch")
   .settings(
-    libraryDependencies ++= Seq(%%("finch-core")) ++ commonDeps ++ freestyleCoreDeps
+    libraryDependencies ++= Seq(%%("finch-core")) ++ commonDeps ++ fCoreDeps
   )
 
 lazy val httpAkka = (project in file("http/akka"))
@@ -98,17 +101,18 @@ lazy val httpAkka = (project in file("http/akka"))
     libraryDependencies ++= Seq(
       %%("akka-http"),
       %%("akka-http-testkit") % "test"
-    ) ++ commonDeps ++ freestyleCoreDeps
+    ) ++ commonDeps ++ fCoreDeps
   )
 
 lazy val httpPlay = (project in file("http/play"))
+  .disablePlugins(CoursierPlugin)
   .settings(name := "freestyle-http-play")
   .settings(
     concurrentRestrictions in Global := Seq(Tags.limitAll(1)),
     libraryDependencies ++= Seq(
-      %%("play")      % "test",
-      %%("play-test") % "test"
-    ) ++ commonDeps ++ freestyleCoreDeps
+      %%("play", "2.6.0-M5")      % "test",
+      %%("play-test", "2.6.0-M5") % "test"
+    ) ++ commonDeps ++ fCoreDeps
   )
 
 pgpPassphrase := Some(getEnvVar("PGP_PASSPHRASE").getOrElse("").toCharArray)

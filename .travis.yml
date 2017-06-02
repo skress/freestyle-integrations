@@ -31,7 +31,7 @@ before_install:
     openssl aes-256-cbc -K $encrypted_b98060c2aae7_key -iv $encrypted_b98060c2aae7_iv -in secring.gpg.enc -out secring.gpg -d;
   fi
 - export PATH=${PATH}:./vendor/bundle
-- git clone https://github.com/frees-io/freestyle-docs.git
+#- git clone https://github.com/frees-io/freestyle-docs.git
 
 install:
 - rvm use 2.2.3 --install --fuzzy
@@ -42,10 +42,10 @@ install:
 script:
 - sbt ++$TRAVIS_SCALA_VERSION test:fastOptJS
 - sbt ++$TRAVIS_SCALA_VERSION orgScriptCI
-- if [ "$TRAVIS_SCALA_VERSION" = "2.12.2" ]; then
-     sbt ++$TRAVIS_SCALA_VERSION publishLocal;
-     cd freestyle-docs && sbt ++$TRAVIS_SCALA_VERSION "clean" "tut"  && cd ..;
-  fi
+#- if [ "$TRAVIS_SCALA_VERSION" = "2.12.2" ]; then
+#     sbt ++$TRAVIS_SCALA_VERSION publishLocal;
+#     cd freestyle-docs && sbt ++$TRAVIS_SCALA_VERSION "clean" "tut"  && cd ..;
+#  fi
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
