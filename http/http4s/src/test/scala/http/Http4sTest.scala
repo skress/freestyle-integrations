@@ -30,6 +30,7 @@ import freestyle.http.http4s._
 class Http4sTests extends AsyncWordSpec with Matchers {
   import algebras._
   import handlers._
+  implicit val x: FSHandler[App.Op, Task] = iota.CopK.FunctionK.summon
 
   "Http4s Freestyle integration" should {
 
@@ -39,14 +40,15 @@ class Http4sTests extends AsyncWordSpec with Matchers {
     def getUsers[F[_]: App]: FreeS[F, List[User]] =
       App[F].userRepo.list
 
-    /*
-     TO Be fixed.
-
     "provide a EntityEncoder for FreeS types" in {
       "EntityEncoder[FreeS[App.Op, String]]" should compile
+    }
+
+    "provide a EntityEncoder for FreeS.Par types" in {
       "EntityEncoder[FreeS.Par[App.Op, String]]" should compile
     }
     "allow a FreeS program to be used with http4s" in {
+
       val userService = HttpService {
         case GET -> Root / "user" / LongVar(id) =>
           Ok(getUser[App.Op](id).map(_.toString))
@@ -75,7 +77,6 @@ class Http4sTests extends AsyncWordSpec with Matchers {
       }).unsafeRunAsyncFuture
     }
 
-   */
   }
 }
 
