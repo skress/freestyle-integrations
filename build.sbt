@@ -1,5 +1,6 @@
-lazy val fCoreDeps =
-  Seq(%%("freestyle", Option(sys.props("frees.version")).getOrElse("0.2.0")))
+lazy val fsVersion = Option(sys.props("frees.version")).getOrElse("0.2.0")
+
+lazy val fCoreDeps = freestyleCoreDeps(Some(fsVersion))
 
 lazy val root = (project in file("."))
   .settings(moduleName := "root")
@@ -24,7 +25,7 @@ lazy val cacheRedis = (project in file("freestyle-cache-redis"))
     resolvers += Resolver.mavenLocal,
     libraryDependencies ++= Seq(
       %%("rediscala"),
-      %%("freestyle-cache"),
+      %%("freestyle-cache", fsVersion),
       %%("akka-actor")    % "test",
       %("embedded-redis") % "test"
     ) ++ commonDeps ++ fCoreDeps
@@ -44,7 +45,7 @@ lazy val slick = (project in file("freestyle-slick"))
   .settings(
     libraryDependencies ++= Seq(
       %%("slick"),
-      %%("freestyle-async"),
+      %%("freestyle-async", fsVersion),
       %("h2") % "test"
     ) ++ commonDeps ++ fCoreDeps
   )
