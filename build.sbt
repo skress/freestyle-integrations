@@ -93,7 +93,7 @@ lazy val httpHttp4s = (project in file("http/http4s"))
 lazy val httpFinch = (project in file("http/finch"))
   .settings(name := "freestyle-http-finch")
   .settings(
-    libraryDependencies ++= Seq(%%("finch-core")) ++ commonDeps ++ fCoreDeps
+    libraryDependencies ++= Seq(%%("finch-core", "0.14.1")) ++ commonDeps ++ fCoreDeps
   )
 
 lazy val httpAkka = (project in file("http/akka"))
