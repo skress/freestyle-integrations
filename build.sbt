@@ -1,3 +1,5 @@
+import sbtorgpolicies.runnable.syntax._
+
 lazy val fsVersion = Option(sys.props("frees.version")).getOrElse("0.3.0")
 
 lazy val fCoreDeps = freestyleCoreDeps(Some(fsVersion))
@@ -6,7 +8,7 @@ lazy val root = (project in file("."))
   .settings(moduleName := "root")
   .settings(name := "freestyle-integrations")
   .settings(noPublishSettings: _*)
-  .aggregate(freestyleModules: _*)
+  .aggregate(allModules: _*)
 
 lazy val monix = (crossProject in file("freestyle-monix"))
   .settings(name := "freestyle-monix")
@@ -120,19 +122,30 @@ pgpPassphrase := Some(getEnvVar("PGP_PASSPHRASE").getOrElse("").toCharArray)
 pgpPublicRing := file(s"$gpgFolder/pubring.gpg")
 pgpSecretRing := file(s"$gpgFolder/secring.gpg")
 
-lazy val freestyleModules: Seq[ProjectReference] = Seq(
+lazy val jvmModules: Seq[ProjectReference] = Seq(
   monixJVM,
-  monixJS,
   cacheRedis,
   doobie,
   slick,
   twitterUtil,
   fetchJVM,
-  fetchJS,
   fs2JVM,
-  fs2JS,
   httpHttp4s,
   httpFinch,
   httpAkka,
   httpPlay
 )
+
+lazy val jsModules: Seq[ProjectReference] = Seq(
+  monixJS,
+  fetchJS,
+  fs2JS
+)
+
+lazy val allModules: Seq[ProjectReference] = jvmModules ++ jsModules
+
+addCommandAlias("validateJVM", (toCompileTestList(jvmModules) ++ List("project root")).asCmd)
+addCommandAlias("validateJS", (toCompileTestList(jsModules) ++ List("project root")).asCmd)
+addCommandAlias(
+  "validate",
+  ";clean;compile;coverage;validateJVM;coverageReport;coverageAggregate;coverageOff")
