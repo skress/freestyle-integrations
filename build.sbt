@@ -1,4 +1,4 @@
-lazy val fsVersion = Option(sys.props("frees.version")).getOrElse("0.2.0")
+lazy val fsVersion = Option(sys.props("frees.version")).getOrElse("0.3.0")
 
 lazy val fCoreDeps = freestyleCoreDeps(Some(fsVersion))
 
