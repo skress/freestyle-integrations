@@ -31,7 +31,7 @@ object slick {
     def run[A](f: DBIO[A]): FS[A]
   }
 
-  object implicits {
+  trait Implicits {
     implicit def freeStyleSlickHandler[M[_]](
         implicit asyncContext: AsyncContext[M],
         db: JdbcBackend#DatabaseDef): SlickM.Handler[M] =
@@ -56,4 +56,5 @@ object slick {
       }
   }
 
+  object implicits extends Implicits
 }

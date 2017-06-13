@@ -29,7 +29,7 @@ object fetch {
     def runEWithCache[A](f: Fetch[A], cache: DataSourceCache): FS[FetchEnv]
   }
 
-  object implicits {
+  trait Implicits {
 
     implicit def freeStyleFetchHandler[M[_]: FetchMonadError]: FetchM.Handler[M] =
       new FetchM.Handler[M] {
@@ -52,4 +52,5 @@ object fetch {
 
   }
 
+  object implicits extends Implicits
 }

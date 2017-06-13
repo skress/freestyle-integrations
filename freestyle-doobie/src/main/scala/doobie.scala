@@ -25,7 +25,7 @@ object doobie {
     def transact[A](f: ConnectionIO[A]): FS[A]
   }
 
-  object implicits {
+  trait Implicits {
     implicit def freeStyleDoobieHandler[M[_]: Catchable: Suspendable](
         implicit xa: Transactor[M]): DoobieM.Handler[M] =
       new DoobieM.Handler[M] {
@@ -38,4 +38,5 @@ object doobie {
       }
   }
 
+  object implicits extends Implicits
 }

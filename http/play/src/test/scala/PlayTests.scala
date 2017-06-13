@@ -17,17 +17,28 @@
 package freestyle.http
 
 import org.scalatest.{Matchers, WordSpec}
-
+import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 import cats.Monad
 import freestyle._
 import freestyle.implicits._
 import freestyle.http.play.implicits._
-import _root_.play.api.mvc.{Action, Codec, Request, Result, Results}
+import _root_.play.api.mvc.{
+  Action,
+  BaseController,
+  Codec,
+  ControllerComponents,
+  Request,
+  Result,
+  Results
+}
 import _root_.play.api.http.{ContentTypeOf, Writeable}
 import ExecutionContext.Implicits.global
 
-class PlayTests extends WordSpec with Matchers {
+class PlayTests @Inject()(val controllerComponents: ControllerComponents)
+    extends WordSpec
+    with Matchers
+    with BaseController {
 
   implicit def unitWr(implicit C: Codec): Writeable[Unit] =
     Writeable(data => C.encode(data.toString))

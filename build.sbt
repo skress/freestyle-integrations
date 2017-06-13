@@ -13,8 +13,7 @@ lazy val root = (project in file("."))
 lazy val monix = (crossProject in file("freestyle-monix"))
   .settings(name := "freestyle-monix")
   .jsSettings(sharedJsSettings: _*)
-  .crossDepSettings(
-    commonDeps ++ fCoreDeps ++
+  .crossDepSettings(commonDeps ++ fCoreDeps ++
     Seq(%("monix-eval"), %("monix-cats")): _*)
 
 lazy val monixJVM = monix.jvm
@@ -113,8 +112,8 @@ lazy val httpPlay = (project in file("http/play"))
   .settings(
     concurrentRestrictions in Global := Seq(Tags.limitAll(1)),
     libraryDependencies ++= Seq(
-      %%("play", "2.6.0-M5")      % "test",
-      %%("play-test", "2.6.0-M5") % "test"
+      %%("play")      % "test",
+      %%("play-test") % "test"
     ) ++ commonDeps ++ fCoreDeps
   )
 

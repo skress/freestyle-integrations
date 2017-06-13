@@ -17,21 +17,22 @@
 package freestyle
 
 import _root_.fs2._
-import _root_.fs2.util.{Attempt, Catchable, Suspendable, Monad, Free}
+import _root_.fs2.util.{Attempt, Catchable, Free, Monad, Suspendable}
 
-import cats.{MonadError, Monoid, ~>}
+import cats.{~>, MonadError, Monoid}
 import cats.free.{Free => CFree}
 
 object fs2 {
   type Eff[A] = Free[CFree[Attempt, ?], A]
 
-  implicit val catsFreeAttemptCatchable: Catchable[CFree[Attempt, ?]] = new Catchable[CFree[Attempt, ?]] {
-    def pure[A](a: A): CFree[Attempt, A]                              = CFree.pure(a)
-    def attempt[A](fa: CFree[Attempt, A]): CFree[Attempt, Attempt[A]] = fa.map(Attempt(_))
-    def fail[A](err: Throwable): CFree[Attempt, A]                    = CFree.liftF(Left(err))
-    def flatMap[A, B](a: CFree[Attempt, A])(f: A => CFree[Attempt, B]): CFree[Attempt, B] =
-      a.flatMap(f)
-  }
+  implicit val catsFreeAttemptCatchable: Catchable[CFree[Attempt, ?]] =
+    new Catchable[CFree[Attempt, ?]] {
+      def pure[A](a: A): CFree[Attempt, A]                              = CFree.pure(a)
+      def attempt[A](fa: CFree[Attempt, A]): CFree[Attempt, Attempt[A]] = fa.map(Attempt(_))
+      def fail[A](err: Throwable): CFree[Attempt, A]                    = CFree.liftF(Left(err))
+      def flatMap[A, B](a: CFree[Attempt, A])(f: A => CFree[Attempt, B]): CFree[Attempt, B] =
+        a.flatMap(f)
+    }
 
   private[fs2] sealed class EffMonad extends Monad[Eff] {
     def pure[A](a: A): Eff[A]                            = Free.pure(a)
@@ -54,7 +55,7 @@ object fs2 {
     def runLast[A](s: Stream[Eff, A]): FS[Option[A]]
   }
 
-  object implicits {
+  trait Implicits {
     implicit def freeStyleFs2StreamHandler[F[_]](
         implicit ME: MonadError[F, Throwable]
     ): StreamM.Handler[F] = {
@@ -75,6 +76,9 @@ object fs2 {
       }
     }
 
+  }
+
+  object implicits extends Implicits {
     implicit class Fs2FreeSyntax[A](private val s: Stream[Eff, A]) extends AnyVal {
       def liftFS[F[_]](implicit MA: Monoid[A], SF: StreamM[F]): FreeS[F, A] =
         liftFSPar.freeS
