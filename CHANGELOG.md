@@ -1,5 +1,13 @@
 # Changelog
 
+## 06/13/2017 - Version 0.3.0
+
+Release changes:
+
+* Makes the freestyle dependencies parametrizable ([#7](https://github.com/frees-io/freestyle-integrations/pull/7))
+* Sets publishArtifact in (Compile, packageDoc) to false ([#10](https://github.com/frees-io/freestyle-integrations/pull/10))
+
+
 ## 06/02/2017 - Version 0.2.0
 
 Release changes:
