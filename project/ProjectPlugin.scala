@@ -1,6 +1,6 @@
 import freestyle.FreestylePlugin
 import sbt._
-import sbtorgpolicies.OrgPoliciesPlugin.autoImport.orgScriptTaskListSetting
+import sbtorgpolicies.OrgPoliciesPlugin.autoImport._
 import sbtorgpolicies.runnable.syntax._
 
 object ProjectPlugin extends AutoPlugin {
@@ -13,6 +13,6 @@ object ProjectPlugin extends AutoPlugin {
 
   override def projectSettings: Seq[Def.Setting[_]] = Seq(
     orgScriptTaskListSetting := List("validate".asRunnableItemFull)
-  )
+  ) ++ scalaMetaSettings
 
 }
