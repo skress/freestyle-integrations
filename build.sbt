@@ -1,6 +1,6 @@
 import sbtorgpolicies.runnable.syntax._
 
-lazy val fsVersion = Option(sys.props("frees.version")).getOrElse("0.3.0")
+lazy val fsVersion = Option(sys.props("frees.version")).getOrElse("0.3.1")
 
 lazy val fCoreDeps = freestyleCoreDeps(Some(fsVersion))
 
