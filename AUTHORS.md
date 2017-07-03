@@ -26,6 +26,7 @@ These are the people that have contributed to the freestyle-integrations project
 * Jorge Galindo <[jorgegalindocruces](https://github.com/jorgegalindocruces)>
 * Juan Pedro Moreno <[juanpedromoreno](https://github.com/juanpedromoreno)>
 * Juan Ramón González <[jrgonzalezg](https://github.com/jrgonzalezg)>
+* Matthias Andreas Benkard <[benkard](https://github.com/benkard)>
 * Maureen Elsberry  <[MaureenElsberry](https://github.com/MaureenElsberry)>
 * Peter Neyens <[peterneyens](https://github.com/peterneyens)>
 * Raúl Raja Martínez <[raulraja](https://github.com/raulraja)>
