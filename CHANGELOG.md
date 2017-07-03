@@ -1,5 +1,16 @@
 # Changelog
 
+## 07/03/2017 - Version 0.3.1
+
+Release changes:
+
+* Enables CI checks for the docs project ([#9](https://github.com/frees-io/freestyle-integrations/pull/9))
+* Refactor Implicits ([#8](https://github.com/frees-io/freestyle-integrations/pull/8))
+* Uses scalaMetaSettings through the project plugin ([#14](https://github.com/frees-io/freestyle-integrations/pull/14))
+* Fix empty freestyle-cache-redis distribution ([#15](https://github.com/frees-io/freestyle-integrations/pull/15))
+* Releases freestyle-integrations 0.3.1 ([#16](https://github.com/frees-io/freestyle-integrations/pull/16))
+
+
 ## 06/13/2017 - Version 0.3.0
 
 Release changes:
