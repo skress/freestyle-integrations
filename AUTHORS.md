@@ -14,7 +14,6 @@ These are the people that have contributed to the freestyle-integrations project
 * 47 Degrees Dev <[47degdev](https://github.com/47degdev)>
 * Adrián Ramírez Fornell <[AdrianRaFo](https://github.com/AdrianRaFo)>
 * Ana Mª Marquez <[anamariamv](https://github.com/anamariamv)>
-* Andy Scott <[andyscott](https://github.com/andyscott)>
 * Diego Esteban Alonso Blas <[diesalbla](https://github.com/diesalbla)>
 * Domingo Valera <[dominv](https://github.com/dominv)>
 * Fede Fernández <[fedefernandez](https://github.com/fedefernandez)>
@@ -32,3 +31,4 @@ These are the people that have contributed to the freestyle-integrations project
 * Raúl Raja Martínez <[raulraja](https://github.com/raulraja)>
 * Sam Halliday <[fommil](https://github.com/fommil)>
 * Suhas Gaddam <[suhasgaddam](https://github.com/suhasgaddam)>
+* andy scott <[andyscott](https://github.com/andyscott)>
