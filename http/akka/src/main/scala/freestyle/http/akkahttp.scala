@@ -17,9 +17,9 @@
 package freestyle
 package http
 
-import freestyle.{FreeS}
+import freestyle.{FSHandler, FreeS}
 import _root_.akka.http.scaladsl.marshalling.ToEntityMarshaller
-import cats.{~>, Monad}
+import cats.{~>, Applicative, Monad}
 
 package object akka {
 
@@ -27,15 +27,15 @@ package object akka {
   import freestyle.implicits._
 
   implicit def seqToEntityMarshaller[F[_], G[_], A](
-      implicit NT: F ~> G,
+      implicit NT: FSHandler[F, G],
       MonG: Monad[G],
       gem: ToEntityMarshaller[G[A]]): ToEntityMarshaller[FreeS[F, A]] =
     gem.compose((fs: FreeS[F, A]) => fs.interpret[G])
 
   implicit def parToEntityMarshaller[F[_], G[_], A](
-      implicit NT: F ~> G,
-      MonG: Monad[G],
+      implicit NT: FSHandler[F, G],
+      ApplG: Applicative[G],
       gem: ToEntityMarshaller[G[A]]): ToEntityMarshaller[FreeS.Par[F, A]] =
-    gem.compose((fp: FreeS.Par[F, A]) => FreeS.liftPar(fp).interpret[G])
+    gem.compose((fp: FreeS.Par[F, A]) => fp.interpret[G])
 
 }
