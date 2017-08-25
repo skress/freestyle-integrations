@@ -1,8 +1,8 @@
 import sbtorgpolicies.runnable.syntax._
 
-lazy val fsVersion = Option(sys.props("frees.version")).getOrElse("0.3.1")
+lazy val fsVersion = Option(sys.props("frees.version")).getOrElse("0.3.2-SNAPSHOT")
 
-lazy val fCoreDeps = freestyleCoreDeps(Some(fsVersion))
+lazy val fCoreDeps = "io.frees" %% "frees-core" % fsVersion :: Nil //freestyleCoreDeps(Some(fsVersion))
 
 lazy val root = (project in file("."))
   .settings(moduleName := "root")
@@ -10,8 +10,7 @@ lazy val root = (project in file("."))
   .settings(noPublishSettings: _*)
   .aggregate(allModules: _*)
 
-lazy val monix = (crossProject in file("freestyle-monix"))
-  .settings(name := "freestyle-monix")
+lazy val monix = module("monix", full = false)
   .jsSettings(sharedJsSettings: _*)
   .crossDepSettings(commonDeps ++ fCoreDeps ++
     Seq(%("monix-eval"), %("monix-cats")): _*)
@@ -19,21 +18,19 @@ lazy val monix = (crossProject in file("freestyle-monix"))
 lazy val monixJVM = monix.jvm
 lazy val monixJS  = monix.js
 
-lazy val cacheRedis = (project in file("freestyle-cache-redis"))
+lazy val cacheRedis = jvmModule("cache-redis")
   .settings(
-    name := "freestyle-cache-redis",
     resolvers += "Sonatype OSS Releases" at "https://oss.sonatype.org/content/repositories/releases/",
     resolvers += Resolver.mavenLocal,
     libraryDependencies ++= Seq(
       %%("rediscala"),
-      %%("freestyle-cache", fsVersion),
+      "io.frees" %% "frees-cache" % fsVersion,
       %%("akka-actor")    % "test",
       %("embedded-redis") % "test"
     ) ++ commonDeps ++ fCoreDeps
   )
 
-lazy val doobie = (project in file("freestyle-doobie"))
-  .settings(name := "freestyle-doobie")
+lazy val doobie = jvmModule("doobie")
   .settings(
     libraryDependencies ++= Seq(
       %%("doobie-core-cats"),
@@ -41,24 +38,21 @@ lazy val doobie = (project in file("freestyle-doobie"))
     ) ++ commonDeps ++ fCoreDeps
   )
 
-lazy val slick = (project in file("freestyle-slick"))
-  .settings(name := "freestyle-slick")
+lazy val slick = jvmModule("slick")
   .settings(
     libraryDependencies ++= Seq(
       %%("slick"),
-      %%("freestyle-async", fsVersion),
+      "io.frees" %% "frees-async" % fsVersion,
       %("h2") % "test"
     ) ++ commonDeps ++ fCoreDeps
   )
 
-lazy val twitterUtil = (project in file("freestyle-twitter-util"))
-  .settings(name := "freestyle-twitter-util")
+lazy val twitterUtil = jvmModule("twitter-util")
   .settings(
     libraryDependencies ++= Seq(%%("catbird-util")) ++ commonDeps ++ fCoreDeps
   )
 
-lazy val fetch = (crossProject in file("freestyle-fetch"))
-  .settings(name := "freestyle-fetch")
+lazy val fetch = module("fetch")
   .jsSettings(sharedJsSettings: _*)
   .crossDepSettings(
     commonDeps ++ fCoreDeps ++ Seq(
@@ -70,8 +64,7 @@ lazy val fetch = (crossProject in file("freestyle-fetch"))
 lazy val fetchJVM = fetch.jvm
 lazy val fetchJS  = fetch.js
 
-lazy val fs2 = (crossProject in file("freestyle-fs2"))
-  .settings(name := "freestyle-fs2")
+lazy val fs2 = module("fs2")
   .jsSettings(sharedJsSettings: _*)
   .crossDepSettings(
     commonDeps ++ fCoreDeps ++ Seq(
@@ -82,8 +75,8 @@ lazy val fs2 = (crossProject in file("freestyle-fs2"))
 lazy val fs2JVM = fs2.jvm
 lazy val fs2JS  = fs2.js
 
-lazy val httpHttp4s = (project in file("http/http4s"))
-  .settings(name := "freestyle-http-http4s")
+lazy val httpHttp4s = (project in file("modules/http/http4s"))
+  .settings(name := "frees-http-http4s")
   .settings(
     libraryDependencies ++= Seq(
       %%("http4s-core"),
@@ -91,14 +84,14 @@ lazy val httpHttp4s = (project in file("http/http4s"))
     ) ++ commonDeps ++ fCoreDeps
   )
 
-lazy val httpFinch = (project in file("http/finch"))
-  .settings(name := "freestyle-http-finch")
+lazy val httpFinch = (project in file("modules/http/finch"))
+  .settings(name := "frees-http-finch")
   .settings(
     libraryDependencies ++= Seq(%%("finch-core", "0.14.1")) ++ commonDeps ++ fCoreDeps
   )
 
-lazy val httpAkka = (project in file("http/akka"))
-  .settings(name := "freestyle-http-akka")
+lazy val httpAkka = (project in file("modules/http/akka"))
+  .settings(name := "frees-http-akka")
   .settings(
     libraryDependencies ++= Seq(
       %%("akka-http"),
@@ -106,9 +99,9 @@ lazy val httpAkka = (project in file("http/akka"))
     ) ++ commonDeps ++ fCoreDeps
   )
 
-lazy val httpPlay = (project in file("http/play"))
+lazy val httpPlay = (project in file("modules/http/play"))
   .disablePlugins(CoursierPlugin)
-  .settings(name := "freestyle-http-play")
+  .settings(name := "frees-http-play")
   .settings(
     concurrentRestrictions in Global := Seq(Tags.limitAll(1)),
     libraryDependencies ++= Seq(
