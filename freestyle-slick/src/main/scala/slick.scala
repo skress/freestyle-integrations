@@ -22,8 +22,7 @@ import freestyle.async._
 
 import scala.util.{Failure, Success}
 
-import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.{ExecutionContext, Future}
 
 object slick {
 
@@ -34,7 +33,8 @@ object slick {
   trait Implicits {
     implicit def freeStyleSlickHandler[M[_]](
         implicit asyncContext: AsyncContext[M],
-        db: JdbcBackend#DatabaseDef): SlickM.Handler[M] =
+        db: JdbcBackend#DatabaseDef,
+        ec: ExecutionContext): SlickM.Handler[M] =
       new SlickM.Handler[M] {
         def run[A](fa: DBIO[A]): M[A] = asyncContext.runAsync { cb =>
           db.run(fa).onComplete {
@@ -45,7 +45,8 @@ object slick {
       }
 
     implicit def freeStyleSlickFutureHandler(
-        implicit db: JdbcBackend#DatabaseDef): SlickM.Handler[Future] =
+        implicit db: JdbcBackend#DatabaseDef,
+        ec: ExecutionContext): SlickM.Handler[Future] =
       new SlickM.Handler[Future] {
         def run[A](fa: DBIO[A]): Future[A] = db.run(fa)
       }
