@@ -13,7 +13,7 @@ lazy val root = (project in file("."))
 lazy val monix = module("monix", full = false)
   .jsSettings(sharedJsSettings: _*)
   .crossDepSettings(commonDeps ++ fCoreDeps ++
-    Seq(%("monix-eval"), %("monix-cats")): _*)
+    Seq(%%("monix-eval", "2.3.0"), %%("monix-cats", "2.3.0")): _*)
 
 lazy val monixJVM = monix.jvm
 lazy val monixJS  = monix.js
@@ -33,8 +33,8 @@ lazy val cacheRedis = jvmModule("cache-redis")
 lazy val doobie = jvmModule("doobie")
   .settings(
     libraryDependencies ++= Seq(
-      %%("doobie-core-cats"),
-      %%("doobie-h2-cats") % "test"
+      %%("doobie-core-cats", "0.4.1"),
+      %%("doobie-h2-cats", "0.4.1") % "test"
     ) ++ commonDeps ++ fCoreDeps
   )
 
@@ -49,7 +49,7 @@ lazy val slick = jvmModule("slick")
 
 lazy val twitterUtil = jvmModule("twitter-util")
   .settings(
-    libraryDependencies ++= Seq(%%("catbird-util")) ++ commonDeps ++ fCoreDeps
+    libraryDependencies ++= Seq(%%("catbird-util", "0.15.0")) ++ commonDeps ++ fCoreDeps
   )
 
 lazy val fetch = module("fetch")
@@ -79,8 +79,8 @@ lazy val httpHttp4s = (project in file("modules/http/http4s"))
   .settings(name := "frees-http-http4s")
   .settings(
     libraryDependencies ++= Seq(
-      %%("http4s-core"),
-      %%("http4s-dsl") % "test"
+      %%("http4s-core", "0.17.4"),
+      %%("http4s-dsl", "0.17.4") % "test"
     ) ++ commonDeps ++ fCoreDeps
   )
 
@@ -100,7 +100,6 @@ lazy val httpAkka = (project in file("modules/http/akka"))
   )
 
 lazy val httpPlay = (project in file("modules/http/play"))
-  .disablePlugins(CoursierPlugin)
   .settings(name := "frees-http-play")
   .settings(
     concurrentRestrictions in Global := Seq(Tags.limitAll(1)),
